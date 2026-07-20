@@ -1,19 +1,11 @@
 from fastapi import FastAPI
 
+from api.v1.routes import router
+from core.config import APP_NAME, APP_VERSION
+
 app = FastAPI(
-    title="Supply Prescript API",
-    version="1.0.0",
-    description="Closed Loop Prescriptive Analytics"
+    title=APP_NAME,
+    version=APP_VERSION
 )
 
-@app.get("/")
-def home():
-    return {
-        "message": "Supply Prescript API is Running"
-    }
-
-@app.get("/health")
-def health():
-    return {
-        "status": "healthy"
-    }
+app.include_router(router, prefix="/api/v1")
