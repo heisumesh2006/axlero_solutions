@@ -1,15 +1,18 @@
 from fastapi import APIRouter
 
-router = APIRouter()
+from backend.core.logger import logger
 
-@router.get("/")
-def home():
-    return {
-        "message": "Supply Prescript API v1"
-    }
+router = APIRouter(
+    prefix="/api/v1",
+    tags=["Version 1"]
+)
+
 
 @router.get("/health")
 def health():
+    logger.info("Health endpoint accessed")
+
     return {
-        "status": "healthy"
+        "status": "healthy",
+        "service": "Axlero API"
     }
