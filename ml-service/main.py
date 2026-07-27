@@ -1,11 +1,13 @@
 ﻿from fastapi import FastAPI
 
 from optimization.routes import router as optimization_router
+from prescription.routes import router as prescription_router
 from prediction.routes import prediction_service, router
 
 app = FastAPI(title="SupplyPrescript ML Service")
 app.include_router(router)
 app.include_router(optimization_router)
+app.include_router(prescription_router)
 
 
 @app.on_event("startup")
