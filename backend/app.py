@@ -2,10 +2,11 @@ from fastapi import FastAPI
 
 from backend.api.v1.routes import router
 from backend.core.logger import logger
+from backend.core.config import settings
 
 app = FastAPI(
-    title="Axlero API",
-    version="1.0.0"
+    title=settings.APP_NAME,
+    version=settings.APP_VERSION
 )
 
 logger.info("Starting Axlero API")
@@ -15,7 +16,8 @@ app.include_router(router)
 
 @app.get("/")
 def home():
-    logger.info("Root endpoint accessed")
     return {
-        "message": "Welcome to Axlero"
+        "application": settings.APP_NAME,
+        "version": settings.APP_VERSION,
+        "status": "running"
     }

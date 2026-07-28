@@ -1,10 +1,19 @@
-from dotenv import load_dotenv
-import os
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
-load_dotenv()
 
-APP_NAME = "Supply Prescript API"
-APP_VERSION = "1.0.0"
+class Settings(BaseSettings):
+    APP_NAME: str
+    APP_VERSION: str
+    DEBUG: bool
 
-HOST = os.getenv("HOST", "127.0.0.1")
-PORT = int(os.getenv("PORT", 8000))
+    HOST: str
+    PORT: int
+
+    SECRET_KEY: str
+    ALGORITHM: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int
+
+    model_config = SettingsConfigDict(env_file=".env")
+
+
+settings = Settings()
