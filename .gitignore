@@ -64,3 +64,10 @@ $RECYCLE.BIN/
 *.swp
 *.swo
 *~
+__pycache__/
+*.pyc
+.env
+logs/
+*.db
+.vscode/
+.idea/
