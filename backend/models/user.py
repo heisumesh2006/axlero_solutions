@@ -1,6 +1,7 @@
 from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy import String
+from sqlalchemy import Boolean
 
 from backend.database.base import Base
 
@@ -15,3 +16,5 @@ class User(Base):
     email = Column(String(255), unique=True, nullable=False)
 
     hashed_password = Column(String(255), nullable=False)
+
+    is_active = Column(Boolean, default=True)
