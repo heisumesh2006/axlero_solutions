@@ -42,10 +42,11 @@ def register(
         }
 
     user = User(
-        username=data.username,
-        email=data.email,
-        hashed_password=hash_password(data.password)
-    )
+    username=data.username,
+    email=data.email,
+    hashed_password=hash_password(data.password),
+    role="USER"
+)
 
     db.add(user)
     db.commit()
@@ -79,9 +80,10 @@ def login(
         }
 
     token = create_access_token({
-        "sub": str(user.id),
-        "username": user.username
-    })
+    "sub": str(user.id),
+    "username": user.username,
+    "role": user.role
+})
 
     return {
         "access_token": token,
