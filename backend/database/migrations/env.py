@@ -7,6 +7,7 @@ from alembic import context
 
 from backend.database.base import Base
 from backend.models.user import User
+from backend.models.scan import Scan
 
 config = context.config
 
