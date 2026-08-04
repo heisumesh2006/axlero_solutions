@@ -8,6 +8,9 @@ from backend.models.scan import Scan
 from backend.schemas.scan import ScanCreate
 from backend.schemas.scan import ScanResponse
 
+from backend.models.finding import Finding
+from backend.services.risk_engine import analyze_target
+
 
 router = APIRouter(
     prefix="/scans",
@@ -46,3 +49,44 @@ def create_scan(
     db.refresh(scan)
 
     return scan
+
+@router.post("/{scan_id}/analyze")
+def analyze_scan(
+    scan_id: int,
+    current_user=Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    scan = db.query(Scan).filter(
+        Scan.id == scan_id,
+        Scan.user_id == int(current_user["sub"])
+    ).first()
+
+    if not scan:
+        return {
+            "error": "Scan not found"
+        }
+
+    result = analyze_target(scan.target)
+
+    scan.status = "COMPLETED"
+    scan.risk_score = result["risk_score"]
+
+    for finding in result["findings"]:
+        db.add(
+            Finding(
+                scan_id=scan.id,
+                severity=result["threat_level"],
+                description=finding
+            )
+        )
+
+    db.commit()
+    db.refresh(scan)
+
+    return {
+        "scan_id": scan.id,
+        "status": scan.status,
+        "risk_score": result["risk_score"],
+        "threat_level": result["threat_level"],
+        "findings": result["findings"]
+    }
