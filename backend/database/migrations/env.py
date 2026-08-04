@@ -10,6 +10,7 @@ from backend.models.user import User
 from backend.models.scan import Scan
 from backend.models.finding import Finding
 
+
 config = context.config
 
 if config.config_file_name is not None:
