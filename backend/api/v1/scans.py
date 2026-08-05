@@ -4,13 +4,15 @@ from sqlalchemy.orm import Session
 
 from backend.core.auth import get_current_user
 from backend.database.session import SessionLocal
+
 from backend.models.scan import Scan
+from backend.models.finding import Finding
+
 from backend.schemas.scan import ScanCreate
 from backend.schemas.scan import ScanResponse
 
-from backend.models.finding import Finding
 from backend.services.risk_engine import analyze_target
-
+from backend.services.ml_engine import predict_risk
 
 
 router = APIRouter(
@@ -37,7 +39,6 @@ def create_scan(
     current_user=Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-
     scan = Scan(
         target=data.target,
         scan_type=data.scan_type,
@@ -50,6 +51,7 @@ def create_scan(
     db.refresh(scan)
 
     return scan
+
 
 @router.post("/{scan_id}/analyze")
 def analyze_scan(
@@ -69,14 +71,31 @@ def analyze_scan(
 
     result = analyze_target(scan.target)
 
+    ml_score = predict_risk(
+        scan.target,
+        scan.scan_type
+    )
+
+    final_score = min(
+        result["risk_score"] + ml_score,
+        100
+    )
+
+    if final_score >= 70:
+        threat_level = "HIGH"
+    elif final_score >= 40:
+        threat_level = "MEDIUM"
+    else:
+        threat_level = "LOW"
+
     scan.status = "COMPLETED"
-    scan.risk_score = result["risk_score"]
+    scan.risk_score = final_score
 
     for finding in result["findings"]:
         db.add(
             Finding(
                 scan_id=scan.id,
-                severity=result["threat_level"],
+                severity=threat_level,
                 description=finding
             )
         )
@@ -87,7 +106,7 @@ def analyze_scan(
     return {
         "scan_id": scan.id,
         "status": scan.status,
-        "risk_score": result["risk_score"],
-        "threat_level": result["threat_level"],
+        "risk_score": final_score,
+        "threat_level": threat_level,
         "findings": result["findings"]
     }
