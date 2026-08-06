@@ -13,6 +13,7 @@ from backend.schemas.scan import ScanResponse
 
 from backend.services.risk_engine import analyze_target
 from backend.services.ml_engine import predict_risk
+from backend.services.recommendation_engine import get_recommendation
 
 
 router = APIRouter(
@@ -103,10 +104,16 @@ def analyze_scan(
     db.commit()
     db.refresh(scan)
 
+    recommendations = [
+    get_recommendation(finding)
+    for finding in result["findings"]
+]
+
     return {
         "scan_id": scan.id,
         "status": scan.status,
         "risk_score": final_score,
         "threat_level": threat_level,
-        "findings": result["findings"]
+        "findings": result["findings"],
+        "recommendations": recommendations
     }
