@@ -53,7 +53,35 @@ def create_scan(
 
     return scan
 
+@router.get("")
+def get_scans(
+    current_user=Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    scans = db.query(Scan).filter(
+        Scan.user_id == int(current_user["sub"])
+    ).all()
 
+    return scans
+
+
+@router.get("/{scan_id}")
+def get_scan(
+    scan_id: int,
+    current_user=Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    scan = db.query(Scan).filter(
+        Scan.id == scan_id,
+        Scan.user_id == int(current_user["sub"])
+    ).first()
+
+    if not scan:
+        return {
+            "error": "Scan not found"
+        }
+
+    return scan
 @router.post("/{scan_id}/analyze")
 def analyze_scan(
     scan_id: int,
