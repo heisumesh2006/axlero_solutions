@@ -1,3 +1,5 @@
-﻿@tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
+@layer base { * { @apply border-slate-800; } body { @apply m-0 min-w-[320px] bg-slate-950 font-sans text-slate-100 antialiased; } button, input { font: inherit; } }
+@layer components { .surface { @apply rounded-xl border border-slate-800 bg-slate-900/70 shadow-xl shadow-slate-950/20; } .page-title { @apply text-2xl font-semibold tracking-tight text-white sm:text-3xl; } .page-copy { @apply mt-2 max-w-2xl text-sm leading-6 text-slate-400; } }
