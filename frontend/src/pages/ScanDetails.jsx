@@ -132,9 +132,28 @@ function ScanDetails() {
             Findings
           </h2>
 
-          <p className="mt-4 text-sm text-slate-400">
-            Findings are available from the scan analysis response.
-          </p>
+          {scan.findings?.length ? (
+            <div className="mt-4 space-y-3">
+              {scan.findings.map((finding, index) => (
+                <div
+                  key={index}
+                  className="rounded-lg border border-slate-700 bg-slate-900 p-4"
+                >
+                  <p className="text-sm font-semibold text-red-300">
+                    {finding.severity}
+                  </p>
+
+                  <p className="mt-2 text-sm text-slate-300">
+                    {finding.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="mt-4 text-sm text-slate-400">
+              No findings detected.
+            </p>
+          )}
         </div>
 
         <div className="surface p-6">
@@ -142,9 +161,24 @@ function ScanDetails() {
             Recommendations
           </h2>
 
-          <p className="mt-4 text-sm text-slate-400">
-            Recommendations are available from the scan analysis response.
-          </p>
+          {scan.recommendations?.length ? (
+            <div className="mt-4 space-y-3">
+              {scan.recommendations.map((recommendation, index) => (
+                <div
+                  key={index}
+                  className="rounded-lg border border-slate-700 bg-slate-900 p-4"
+                >
+                  <p className="text-sm text-slate-300">
+                    {recommendation}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="mt-4 text-sm text-slate-400">
+              No recommendations available.
+            </p>
+          )}
         </div>
       </div>
     </section>

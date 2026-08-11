@@ -4,13 +4,10 @@ from sqlalchemy.orm import Session
 
 from backend.core.auth import get_current_user
 from backend.database.session import SessionLocal
-
 from backend.models.scan import Scan
 from backend.models.finding import Finding
-
 from backend.schemas.scan import ScanCreate
 from backend.schemas.scan import ScanResponse
-
 from backend.services.risk_engine import analyze_target
 from backend.services.ml_engine import predict_risk
 from backend.services.recommendation_engine import get_recommendation
@@ -53,6 +50,7 @@ def create_scan(
 
     return scan
 
+
 @router.get("")
 def get_scans(
     current_user=Depends(get_current_user),
@@ -81,7 +79,32 @@ def get_scan(
             "error": "Scan not found"
         }
 
-    return scan
+    findings = db.query(Finding).filter(
+        Finding.scan_id == scan.id
+    ).all()
+
+    recommendations = [
+        get_recommendation(finding.description)
+        for finding in findings
+    ]
+
+    return {
+        "id": scan.id,
+        "target": scan.target,
+        "scan_type": scan.scan_type,
+        "status": scan.status,
+        "risk_score": scan.risk_score,
+        "findings": [
+            {
+                "severity": finding.severity,
+                "description": finding.description
+            }
+            for finding in findings
+        ],
+        "recommendations": recommendations
+    }
+
+
 @router.post("/{scan_id}/analyze")
 def analyze_scan(
     scan_id: int,
@@ -133,9 +156,9 @@ def analyze_scan(
     db.refresh(scan)
 
     recommendations = [
-    get_recommendation(finding)
-    for finding in result["findings"]
-]
+        get_recommendation(finding)
+        for finding in result["findings"]
+    ]
 
     return {
         "scan_id": scan.id,
