@@ -1,0 +1,46 @@
+{
+  "feature_columns": [
+    "Country",
+    "Managed By",
+    "Fulfill Via",
+    "Vendor INCO Term",
+    "Shipment Mode",
+    "Product Group",
+    "Sub Classification",
+    "Vendor",
+    "Brand",
+    "Dosage Form",
+    "Manufacturing Site",
+    "First Line Designation",
+    "Line Item Quantity",
+    "Line Item Value",
+    "Weight (Kilograms)",
+    "Freight Cost (USD)",
+    "scheduled_year",
+    "scheduled_month",
+    "scheduled_quarter"
+  ],
+  "categorical_features": [
+    "Country",
+    "Managed By",
+    "Fulfill Via",
+    "Vendor INCO Term",
+    "Shipment Mode",
+    "Product Group",
+    "Sub Classification",
+    "Vendor",
+    "Brand",
+    "Dosage Form",
+    "Manufacturing Site",
+    "First Line Designation"
+  ],
+  "numeric_features": [
+    "Line Item Quantity",
+    "Line Item Value",
+    "Weight (Kilograms)",
+    "Freight Cost (USD)",
+    "scheduled_year",
+    "scheduled_month",
+    "scheduled_quarter"
+  ]
+}

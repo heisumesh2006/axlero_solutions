@@ -1,73 +1,42 @@
-﻿# Dependencies
-node_modules/
+# Python
+backend/venv/
+backend/__pycache__/
+backend/**/__pycache__/
+*.pyc
+*.pyo
 
-# Environment variables and secrets
+# SQLite runtime database
+backend/supplyprescript.db
+backend/*.db
+*.sqlite
+*.sqlite3
+
+# Node
+frontend/node_modules/
+frontend/build/
+
+# Environment and secrets
 .env
 .env.*
+backend/.env
+frontend/.env
 !.env.example
-!.env.*.example
 
-# Frontend and backend build output
-dist/
-build/
-coverage/
-
-# Logs and diagnostic reports
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-# Python virtual environments
-venv/
-.venv/
-env/
-ENV/
-
-# Python bytecode, caches, and tooling
-__pycache__/
-*.py[cod]
-*$py.class
-*.pyo
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-.pyre/
-.pytype/
-.coverage
-htmlcov/
-
-# PostgreSQL local data and backups
-*.sql.bak
-*.dump
-*.backup
-
-# Editor settings
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
-.idea/
-*.iml
-
-# Operating system files
-.DS_Store
-Thumbs.db
-Desktop.ini
-$RECYCLE.BIN/
-
-# Temporary files
-*.tmp
-*.temp
-*.swp
-*.swo
-*~
-__pycache__/
-*.pyc
-.env
-logs/
-*.db
+# IDE
 .vscode/
 .idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.log
+*.tmp
+
+# Test and type-check caches
+.pytest_cache/
+.mypy_cache/
+
+# Raw source dataset
+SCMS_Delivery_History_Raw_Data.xlsx

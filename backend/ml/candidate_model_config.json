@@ -1,0 +1,26 @@
+{
+  "classification_threshold": 0.5000000000000003,
+  "engineered_numeric_features": [
+    "value_per_unit",
+    "weight_per_unit",
+    "freight_per_kg",
+    "freight_value_ratio"
+  ],
+  "classifier_params": {
+    "max_depth": 6,
+    "learning_rate": 0.03,
+    "n_estimators": 500,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "min_child_weight": 8,
+    "weight_multiplier": 0.75
+  },
+  "regressor_params": {
+    "max_depth": 6,
+    "learning_rate": 0.02,
+    "n_estimators": 700,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "min_child_weight": 10
+  }
+}
